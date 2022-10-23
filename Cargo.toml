@@ -1,0 +1,21 @@
+[package]
+name = "macos-sip"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/metalbear/macos-sip"
+authors = ["MetalBear <hi@metalbear.co>"]
+description = "Interact with SIP binaries on macOS"
+keywords = ["macos", "apple", "darwin", "security", "sip"]
+categories = ["macos", "apple", "darwin", "security", "sip"]
+
+[dependencies]
+object = "0.29"
+memchr = "2"
+tracing = "0.1"
+thiserror = "1"
+
+
+[dev-dependencies]
+tempfile = "3.3.0"
