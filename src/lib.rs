@@ -3,7 +3,8 @@ mod error;
 
 use std::{
     fs::Permissions,
-    os::{macos::fs::MetadataExt, unix::prelude::PermissionsExt}, path::Path,
+    os::{macos::fs::MetadataExt, unix::prelude::PermissionsExt},
+    path::Path,
 };
 
 use object::{
