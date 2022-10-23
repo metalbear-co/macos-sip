@@ -4,6 +4,7 @@ mod error;
 use std::{
     fs::Permissions,
     os::{macos::fs::MetadataExt, unix::prelude::PermissionsExt},
+    path::Path,
 };
 
 use object::{
@@ -72,13 +73,13 @@ impl BinaryInfo {
 
 /// Patches a binary to disable SIP.
 /// Right now it extracts x64 binary from fat/MachO binary and patches it.
-pub fn patch_binary(path: &str, output: &str) -> Result<()> {
-    let data = std::fs::read(path)?;
+pub fn patch_binary<P: AsRef<Path>, K: AsRef<Path>>(path: P, output: K) -> Result<()> {
+    let data = std::fs::read(path.as_ref())?;
     let binary_info = BinaryInfo::from_object_bytes(&data)?;
 
     let x64_binary = &data[binary_info.offset..binary_info.offset + binary_info.size];
-    std::fs::write(output, x64_binary)?;
-    std::fs::set_permissions(output, Permissions::from_mode(0o755))?;
+    std::fs::write(output.as_ref(), x64_binary)?;
+    std::fs::set_permissions(output.as_ref(), Permissions::from_mode(0o755))?;
     codesign::sign(output)
 }
 
