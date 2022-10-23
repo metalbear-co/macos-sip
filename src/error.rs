@@ -14,7 +14,7 @@ pub enum SipError {
     UnsupportedFileFormat(String),
 
     #[error("No x64 architecture in file")]
-    NoX64Arch(String),
+    NoX64Arch,
 
     #[error("ObjectParse failed with `{0}`")]
     ObjectParse(#[from] object::Error),

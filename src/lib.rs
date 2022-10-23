@@ -39,7 +39,7 @@ impl BinaryInfo {
                 if header.cputype(Endianness::default()) == CPU_TYPE_X86_64 {
                     Ok(Self::new(0, bytes.len()))
                 } else {
-                    Err(SipError::NoX64Arch("MachO file is not x64".to_string()))
+                    Err(SipError::NoX64Arch)
                 }
             }
             FileKind::MachO64 => {
@@ -50,7 +50,7 @@ impl BinaryInfo {
                 if header.cputype(Endianness::default()) == CPU_TYPE_X86_64 {
                     Ok(Self::new(0, bytes.len()))
                 } else {
-                    Err(SipError::NoX64Arch("MachO file is not x64".to_string()))
+                    Err(SipError::NoX64Arch)
                 }
             }
             FileKind::MachOFat32 => FatHeader::parse_arch32(bytes)
@@ -58,17 +58,13 @@ impl BinaryInfo {
                 .iter()
                 .find(is_fat_x64_arch)
                 .map(|arch| Self::new(arch.offset() as usize, arch.size() as usize))
-                .ok_or_else(|| {
-                    SipError::NoX64Arch("Couldn't find x64 arch in fat file".to_string())
-                }),
+                .ok_or(SipError::NoX64Arch),
             FileKind::MachOFat64 => FatHeader::parse_arch64(bytes)
                 .map_err(|_| SipError::UnsupportedFileFormat("Mach-O 32-bit".to_string()))?
                 .iter()
                 .find(is_fat_x64_arch)
                 .map(|arch| Self::new(arch.offset() as usize, arch.size() as usize))
-                .ok_or_else(|| {
-                    SipError::NoX64Arch("Couldn't find x64 arch in fat file".to_string())
-                }),
+                .ok_or(SipError::NoX64Arch),
             other => Err(SipError::UnsupportedFileFormat(format!("{:?}", other))),
         }
     }
