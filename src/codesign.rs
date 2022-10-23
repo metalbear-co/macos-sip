@@ -1,12 +1,12 @@
 use crate::error::{Result, SipError};
-use std::process::Command;
+use std::{path::Path, process::Command};
 
-pub(crate) fn sign(path: &str) -> Result<()> {
+pub(crate) fn sign<P: AsRef<Path>>(path: P) -> Result<()> {
     let output = Command::new("codesign")
         .arg("-s") // sign with identity
         .arg("-") // adhoc identity
         .arg("-f") // force (might have a signature already)
-        .arg(path)
+        .arg(path.as_ref())
         .output()?;
     if output.status.success() {
         Ok(())
