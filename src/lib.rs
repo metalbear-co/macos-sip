@@ -69,9 +69,7 @@ impl BinaryInfo {
                 .ok_or_else(|| {
                     SipError::NoX64Arch("Couldn't find x64 arch in fat file".to_string())
                 }),
-            other => Err(SipError::UnsupportedFileFormat(
-                format!("{:?}", other).to_string(),
-            )),
+            other => Err(SipError::UnsupportedFileFormat(format!("{:?}", other))),
         }
     }
 }
@@ -102,7 +100,6 @@ mod tests {
     use std::io::Write;
 
     use super::*;
-    use tempfile::tempfile;
 
     #[test]
     fn is_sip_true() {

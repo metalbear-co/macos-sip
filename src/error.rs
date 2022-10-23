@@ -1,4 +1,3 @@
-
 use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, SipError>;
@@ -7,7 +6,7 @@ pub type Result<T> = std::result::Result<T, SipError>;
 pub enum SipError {
     #[error("IO failed with `{0}`")]
     IO(#[from] std::io::Error),
-    
+
     #[error("Signing failed statuscode: `{0}`, output: `{1}`")]
     Sign(i32, String),
 
