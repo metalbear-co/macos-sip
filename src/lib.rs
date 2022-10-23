@@ -73,7 +73,7 @@ impl BinaryInfo {
 
 /// Patches a binary to disable SIP.
 /// Right now it extracts x64 binary from fat/MachO binary and patches it.
-pub fn patch_binary<P: AsRef<Path>>(path: P, output: P) -> Result<()> {
+pub fn patch_binary<P: AsRef<Path>, K: AsRef<Path>>(path: P, output: K) -> Result<()> {
     let data = std::fs::read(path.as_ref())?;
     let binary_info = BinaryInfo::from_object_bytes(&data)?;
 
