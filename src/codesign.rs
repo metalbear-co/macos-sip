@@ -1,5 +1,5 @@
-use std::process::Command;
 use crate::error::{Result, SipError};
+use std::process::Command;
 
 pub(crate) fn sign(path: &str) -> Result<()> {
     let output = Command::new("codesign")
@@ -11,6 +11,10 @@ pub(crate) fn sign(path: &str) -> Result<()> {
     if output.status.success() {
         Ok(())
     } else {
-        Err(SipError::Sign(output.status.code(), String::from_utf8_lossy(&output.stderr).to_string()))
+        let code = output.status.code().unwrap(); // shuoldn't happen
+        Err(SipError::Sign(
+            code,
+            String::from_utf8_lossy(&output.stderr).to_string(),
+        ))
     }
 }
